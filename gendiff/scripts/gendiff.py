@@ -1,5 +1,6 @@
 import argparse
-from gendiff.main import generate_diff # type: ignore
+
+from gendiff.main import generate_diff  # type: ignore
 
 
 def main():

@@ -1,6 +1,9 @@
 import json
 
-def generate_diff(first_file: str, second_file: str, output_format: str = 'plain') -> None:
+
+def generate_diff(
+    first_file: str, second_file: str, output_format: str = 'plain'
+    ) -> None:
     """
     Основная функция утилиты gendiff.
     Читает два JSON-файла, парсит их и выводит информацию.
@@ -17,7 +20,6 @@ def generate_diff(first_file: str, second_file: str, output_format: str = 'plain
         else:
             return str(value)
         
-    
     all_key = sorted(list(set(file1.keys()) | set(file2.keys())))
     diff_lines = []
 
