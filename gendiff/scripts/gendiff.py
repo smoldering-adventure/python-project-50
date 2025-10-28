@@ -21,7 +21,6 @@ def main():
         '-f', '--format',
         metavar='FORMAT',
         help='set format of output'
-        # Можно добавить choices=['plain', 'json'], если нужно ограничить форматы
     )
 
     args = parser.parse_args()
