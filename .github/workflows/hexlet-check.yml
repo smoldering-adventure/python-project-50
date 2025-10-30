@@ -22,3 +22,18 @@ jobs:
         uses: hexlet/project-action@release
         with:
           hexlet-id: ${{ secrets.HEXLET_ID }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+
+      - name: Run install
+        run: make install
+
+      - name: Run setup
+        run: make setup
+
+      - name: Run tests
+        run: make test
+
+      - name: Run linter
+        run: make lint

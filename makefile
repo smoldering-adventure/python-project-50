@@ -1,3 +1,5 @@
+setup: install build
+
 install:
 	uv sync
 
