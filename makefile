@@ -1,7 +1,7 @@
 setup: install build
 
 install:
-	uv tool install .
+	uv sync
 
 test:
 	uv run pytest
