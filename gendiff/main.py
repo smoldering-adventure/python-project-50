@@ -3,7 +3,7 @@ import json
 
 def generate_diff(
     first_file: str, second_file: str, output_format: str = 'plain'
-    ) -> None:
+    ) -> str:
     """
     Основная функция утилиты gendiff.
     Читает два JSON-файла, парсит их и выводит информацию.
@@ -20,7 +20,7 @@ def generate_diff(
         else:
             return str(value)
         
-    all_key = sorted(list(set(file1.keys()) | set(file2.keys())))
+    all_key = sorted(set(file1.keys()) | set(file2.keys()))
     diff_lines = []
 
     for key in all_key:
