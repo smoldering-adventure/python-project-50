@@ -1,6 +1,7 @@
 import json
 import os
 
+
 # --- Вспомогательная функция для форматирования значений ---
 def format_values(value):
     """
@@ -13,6 +14,7 @@ def format_values(value):
         return "null"
     else:
         return str(value)
+
 
 # --- Вспомогательная функция для чтения файла с проверками ---
 def read_file_content(filepath: str):
@@ -35,16 +37,32 @@ def read_file_content(filepath: str):
 
 # --- Основная функция сравнения ---
 def generate_diff(
-    first_file: str, second_file: str, output_format: str = 'plain'
-    ) -> str:
+    first_file, second_file, output_format: str = 'plain'
+    ):
     """
     Основная функция утилиты gendiff.
     Читает два JSON-файла, парсит их и выводит информацию.
     """
+
+    def load_data(source):
+        """
+        Загружает данные из источника: 
+        либо парсит JSON из файла, либо берет словарь.
+        """
+        if isinstance(source, dict):
+            return source 
+        elif isinstance(source, str):
+            return read_file_content(source) 
+        else:
+            raise TypeError(
+                "Источник должен быть путем "
+                "к файлу (str) или словарем (dict)"
+            )
+
     try:
-        file1 = read_file_content(first_file)
-        file2 = read_file_content(second_file)
-    except (FileNotFoundError, ValueError, RuntimeError) as e:
+        file1 = load_data(first_file)
+        file2 = load_data(second_file)
+    except (FileNotFoundError, ValueError, RuntimeError, TypeError) as e:
         return f"Ошибка: {e}"
         
     all_key = sorted(set(file1.keys()) | set(file2.keys()))
