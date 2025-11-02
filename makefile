@@ -1,10 +1,13 @@
 setup: install build
 
 install:
-	uv sync
+	uv sync .
 
 test:
 	uv run pytest
+
+test-coverage:
+	uv run pytest --cov=gendiff --cov-report=lcov:coverage.info
 
 lint:
 	uv run ruff check

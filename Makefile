@@ -6,7 +6,7 @@ install:
 test:
 	uv run pytest
 
-test_coverage:
+test-coverage:
 	uv run pytest --cov=gendiff --cov-report=lcov:coverage.info
 
 lint:

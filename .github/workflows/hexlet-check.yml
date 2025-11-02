@@ -36,7 +36,9 @@ jobs:
         run: make setup
 
       - name: Run tests
-        run: make test
+        run: |
+          make test
+          make test-coverage
 
       - name: Run linter
         run: make lint
