@@ -35,14 +35,8 @@ jobs:
       - name: Run setup
         run: make setup
 
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
-        if: github.ref_name == 'main'
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.SONAR_TOKEN }}
-        with:
-          coverageCommand: make test-coverage
-          debug: true
+      - name: Run tests
+        run: make test
 
       - name: Run linter
         run: make lint
