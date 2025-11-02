@@ -47,12 +47,8 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
-        if: github.ref_name == 'main'
-        env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          coverageCommand: make test-coverage
-          debug: true
+          projectBaseDir: .
+          args: >
+            -Dsonar.python.coverage.reportPaths=coverage.xml
