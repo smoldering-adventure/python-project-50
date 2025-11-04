@@ -51,4 +51,8 @@ jobs:
         with:
           projectBaseDir: .
           args: >
+            -Dsonar.organization.key=smoldering-adventure
+            -Dsonar.projectKey=smoldering-adventure_python-project-50
+            -Dsonar.sources=.
+            -Dsonar.tests=.
             -Dsonar.python.coverage.reportPaths=coverage.xml
