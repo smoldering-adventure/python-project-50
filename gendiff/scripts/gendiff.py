@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 from gendiff.main import generate_diff  # type: ignore
 
@@ -27,7 +28,13 @@ def main():
     args = parser.parse_args()
 
     # Вызываем основную функцию, передавая ей аргументы
-    print(generate_diff(args.first_file, args.second_file, args.format))
+    try:
+        # Вызываем основную функцию, передавая ей аргументы
+        result = generate_diff(args.first_file, args.second_file, args.format)
+        print(result)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

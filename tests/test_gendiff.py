@@ -1,7 +1,7 @@
 import io
 import sys
 
-import pytest
+import pytest  # type: ignore
 
 from gendiff.scripts.gendiff import main
 
