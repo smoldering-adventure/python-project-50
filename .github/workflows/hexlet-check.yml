@@ -42,16 +42,3 @@ jobs:
 
       - name: Run linter
         run: make lint
-
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.organization.key=smoldering-adventure
-            -Dsonar.projectKey=smoldering-adventure_python-project-50
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.coverage.exclusions=tests/**,**/test_*.py,**/conftest.py
