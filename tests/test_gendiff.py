@@ -44,7 +44,10 @@ def test_main_help(monkeypatch):
     
     # Проверяем ключевые части вывода вместо точного совпадения
     assert "usage: gendiff" in actual_output
-    assert "Compares two configuration files and shows a difference." in actual_output
+    assert (
+        "Compares two configuration files and shows a difference."
+        in actual_output
+    )
     assert "first_file" in actual_output
     assert "second_file" in actual_output
     assert "-h, --help" in actual_output
