@@ -12,7 +12,7 @@ def test_main_output(monkeypatch):
     monkeypatch.setattr(sys, 'stdout', captured_output)
 
     original_argv = sys.argv
-    sys.argv = ['gendiff', 'file1.json', 'file2.json', '-f', 'json']
+    sys.argv = ['gendiff', 'file1.json', 'file2.json', '-f', 'plain']
 
     main()
 

@@ -7,7 +7,7 @@
 
 Пример использования:
 
-[![asciicast](https://asciinema.org/a/7fpC3lA3BYYdN64L7ESZbT6Sr.svg)](https://asciinema.org/a/7fpC3lA3BYYdN64L7ESZbT6Sr)
+[![asciicast](https://asciinema.org/a/5B9HqBvzji1fdqIfaPQUHUV9c.svg)](https://asciinema.org/a/5B9HqBvzji1fdqIfaPQUHUV9c)
 
 
 [def]: https://sonarcloud.io/summary/new_code?id=smoldering-adventure_python-project-50

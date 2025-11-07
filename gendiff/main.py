@@ -17,7 +17,7 @@ def format_values(value: Any) -> str:
         return str(value)
 
 
-def load_data(source: Any, source_format) -> Dict[str, Any]:
+def load_data(source: Any) -> Dict[str, Any]:
     """
     Загружает данные из источника: 
     либо парсит JSON из файла, либо берет словарь.
@@ -25,7 +25,7 @@ def load_data(source: Any, source_format) -> Dict[str, Any]:
     if isinstance(source, dict):
         return source 
     elif isinstance(source, str):
-        return read_file_content(source, source_format) 
+        return read_file_content(source) 
     else:
         raise TypeError(
             "Источник должен быть путем "
@@ -43,21 +43,22 @@ def generate_diff(
     """
 
     try:
-        file_format = None if output_format == 'plain' else output_format
-
-        file1 = load_data(first_file, file_format)
-        file2 = load_data(second_file, file_format)
+        file1 = load_data(first_file)
+        file2 = load_data(second_file)
     except (FileNotFoundError, ValueError, RuntimeError, TypeError) as e:
         return f"Ошибка: {e}"
     
     # Проверяем что данные являются словарями
     if not isinstance(file1, dict) or not isinstance(file2, dict):
         return "Ошибка: Оба источника должны содержать объекты"
+    
+    if output_format != 'plain':
+        return f"Ошибка: Неподдерживаемый формат вывода: {output_format}"
         
-    all_key = sorted(set(file1.keys()) | set(file2.keys()))
+    all_keys = sorted(set(file1.keys()) | set(file2.keys()))
     diff_lines = []
 
-    for key in all_key:
+    for key in all_keys:
         value1 = file1.get(key)
         value2 = file2.get(key)
 
