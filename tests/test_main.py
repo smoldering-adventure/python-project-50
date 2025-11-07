@@ -88,3 +88,12 @@ def test_generate_diff_type_error():
         "Ошибка: Источник должен быть"
         " путем к файлу (str) или словарем (dict)"
     )
+
+
+def test_format(expected_output):
+    """Тестирует переданный формат"""
+    assert generate_diff(file1, file2, format_name='plain') == expected_output
+    assert generate_diff(file1, file2, format_name='stylish') == expected_output
+    assert generate_diff(file1, file2, format_name='not_format') == (
+        "Ошибка: Не поддерживаемый формат not_format"
+    )

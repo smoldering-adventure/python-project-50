@@ -23,7 +23,7 @@ def load_data(source: Any) -> Dict[str, Any]:
 
 # --- Основная функция сравнения ---
 def generate_diff(
-    first_file: Any, second_file: Any, output_format: str = 'stylish'
+    first_file: Any, second_file: Any, format_name: str = 'stylish'
     ) -> str:
     """
     Основная функция утилиты gendiff.
@@ -40,8 +40,11 @@ def generate_diff(
     if not isinstance(file1, dict) or not isinstance(file2, dict):
         return "Ошибка: Оба источника должны содержать объекты"
     
+    if format_name not in ['plain', 'stylish']:
+        return f"Ошибка: Не поддерживаемый формат {format_name}"
+    
     diff = build_diff(file1, file2)
     
-    return format_diff(diff, output_format)
+    return format_diff(diff, format_name)
 
 
