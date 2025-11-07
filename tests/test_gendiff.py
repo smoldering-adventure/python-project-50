@@ -40,11 +40,14 @@ def test_main_plain_format(monkeypatch):
 
     sys.argv = original_argv
 
-    result = captured_output.getvalue().strip()
-
-    assert "Property 'follow' was removed" in result
-    assert "Property 'timeout' was updated. From 50 to 20" in result
-    assert "Property 'verbose' was added with value: true" in result
+    assert captured_output.getvalue().strip() == """{
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
+}"""
 
 
 def test_main_help(monkeypatch):
@@ -89,4 +92,3 @@ def test_main_missing_arguments(monkeypatch):
     
     error_output = captured_error.getvalue()
     assert "error" in error_output.lower()
-

@@ -2,50 +2,57 @@ from typing import Any
 
 
 def format_value(value: Any) -> str:
-    """Форматирует значение для вывода в plain формате."""
-    if isinstance(value, dict):
-        return '[complex value]'
-    elif isinstance(value, str):
-        return f"'{value}'"
+    """Форматирует значение для вывода."""
+    if isinstance(value, bool):
+        return str(value).lower()
     elif value is None:
         return 'null'
-    elif isinstance(value, bool):
-        return str(value).lower()
     else:
         return str(value)
 
 
-def format_plain(diff: list, path: str = '') -> str:
+def format_plain(diff: list, depth: int = 0) -> str:
     """
-    Форматирует diff в plain формате.
+    Форматирует diff в plain формате (простое дерево с +-).
     
     Args:
         diff: Внутреннее представление diff
-        path: Текущий путь к свойству
+        depth: Текущая глубина вложенности
     
     Returns:
         Отформатированная строка
     """
     lines = []
+    indent = '  ' * depth
     
     for node in diff:
         key = node['key']
-        current_path = f"{path}.{key}" if path else key
         node_type = node['type']
         
         if node_type == 'nested':
-            lines.append(format_plain(node['children'], current_path))
+            # Для вложенных узлов
+            lines.append(f"  {indent}  {key}: {{")
+            children = format_plain(node['children'], depth + 1)
+            lines.append(children)
+            lines.append(f"  {indent}  }}")
         elif node_type == 'added':
             value = format_value(node['value'])
-            lines.append(f"Property '{current_path}' was added with value: {value}")
+            lines.append(f"  {indent}+ {key}: {value}")
         elif node_type == 'removed':
-            lines.append(f"Property '{current_path}' was removed")
+            value = format_value(node['value'])
+            lines.append(f"  {indent}- {key}: {value}")
         elif node_type == 'changed':
             old_value = format_value(node['old_value'])
             new_value = format_value(node['new_value'])
-            lines.append(
-                f"Property '{current_path}' was updated. "
-                f"From {old_value} to {new_value}"
-            )
+            lines.append(f"  {indent}- {key}: {old_value}")
+            lines.append(f"  {indent}+ {key}: {new_value}")
+        elif node_type == 'unchanged':
+            value = format_value(node['value'])
+            lines.append(f"  {indent}  {key}: {value}")
     
-    return '\n'.join(line for line in lines if line)
+    result = '\n'.join(lines)
+    
+    if depth == 0:
+        return f"{{\n{result}\n}}"
+    else:
+        return result

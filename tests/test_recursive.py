@@ -77,7 +77,8 @@ def test_plain_format_still_works():
     
     try:
         result = generate_diff(file1, file2, 'plain')
-        assert "Property 'key' was updated. From 'value1' to 'value2'" in result
+        assert "- key: value1" in result
+        assert "+ key: value2" in result
     finally:
         import os
         os.unlink(file1)
@@ -97,7 +98,9 @@ def test_plain_format_with_nested():
     try:
         result = generate_diff(file1, file2, 'plain')
         # Проверяем plain формат с вложенными структурами
-        assert "Property 'parent.child' was updated. From 'value1' to 'value2'" in result
+        assert "parent: {" in result
+        assert "- child: value1" in result
+        assert "+ child: value2" in result
     finally:
         import os
         os.unlink(file1)
