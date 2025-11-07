@@ -21,7 +21,7 @@ def main():
     parser.add_argument(
         '-f', '--format',
         metavar='FORMAT',
-        default='plain',
+        default='stylish',
         help='set format of output'
     )
 

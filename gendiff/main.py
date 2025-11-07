@@ -1,20 +1,8 @@
 from typing import Any, Dict
 
+from gendiff.formatters import format_diff
+from gendiff.scripts.diff_builder import build_diff
 from gendiff.scripts.parsers import read_file_content
-
-
-# --- Вспомогательная функция для форматирования значений ---
-def format_values(value: Any) -> str:
-    """
-    Форматирует значения для вывода, преобразуя булевы в нижний регистр
-    и None в 'null'.
-    """
-    if isinstance(value, bool):
-        return str(value).lower()
-    elif value is None:
-        return "null"
-    else:
-        return str(value)
 
 
 def load_data(source: Any) -> Dict[str, Any]:
@@ -35,7 +23,7 @@ def load_data(source: Any) -> Dict[str, Any]:
 
 # --- Основная функция сравнения ---
 def generate_diff(
-    first_file: Any, second_file: Any, output_format: str = 'plain'
+    first_file: Any, second_file: Any, output_format: str = 'stylish'
     ) -> str:
     """
     Основная функция утилиты gendiff.
@@ -52,27 +40,8 @@ def generate_diff(
     if not isinstance(file1, dict) or not isinstance(file2, dict):
         return "Ошибка: Оба источника должны содержать объекты"
     
-    if output_format != 'plain':
-        return f"Ошибка: Неподдерживаемый формат вывода: {output_format}"
-        
-    all_keys = sorted(set(file1.keys()) | set(file2.keys()))
-    diff_lines = []
-
-    for key in all_keys:
-        value1 = file1.get(key)
-        value2 = file2.get(key)
-
-        if key in file1 and key in file2:
-            if value1 == value2:
-                diff_lines.append(f"    {key}: {format_values(value1)}")
-            else:
-                diff_lines.append(f"  - {key}: {format_values(value1)}")
-                diff_lines.append(f"  + {key}: {format_values(value2)}")
-        elif key in file1:
-            diff_lines.append(f"  - {key}: {format_values(value1)}")
-        else:
-            diff_lines.append(f"  + {key}: {format_values(value2)}")
+    diff = build_diff(file1, file2)
     
-    return "{\n" + '\n'.join(diff_lines) + "\n}"
+    return format_diff(diff, output_format)
 
 

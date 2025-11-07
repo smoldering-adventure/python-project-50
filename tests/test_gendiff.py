@@ -7,12 +7,12 @@ from gendiff.scripts.gendiff import main
 
 
 def test_main_output(monkeypatch):
-    """Тестирует успешное выполнение main() с двумя файлами."""
+    """Тестирует успешное выполнение main() с двумя файлами в stylish формате."""
     captured_output = io.StringIO()
     monkeypatch.setattr(sys, 'stdout', captured_output)
 
     original_argv = sys.argv
-    sys.argv = ['gendiff', 'file1.json', 'file2.json', '-f', 'plain']
+    sys.argv = ['gendiff', 'file1.json', 'file2.json']
 
     main()
 
@@ -26,6 +26,25 @@ def test_main_output(monkeypatch):
   + timeout: 20
   + verbose: true
 }"""
+
+
+def test_main_plain_format(monkeypatch):
+    """Тестирует успешное выполнение main() с двумя файлами в plain формате."""
+    captured_output = io.StringIO()
+    monkeypatch.setattr(sys, 'stdout', captured_output)
+
+    original_argv = sys.argv
+    sys.argv = ['gendiff', 'file1.json', 'file2.json', '-f', 'plain']
+
+    main()
+
+    sys.argv = original_argv
+
+    result = captured_output.getvalue().strip()
+
+    assert "Property 'follow' was removed" in result
+    assert "Property 'timeout' was updated. From 50 to 20" in result
+    assert "Property 'verbose' was added with value: true" in result
 
 
 def test_main_help(monkeypatch):
@@ -66,7 +85,6 @@ def test_main_missing_arguments(monkeypatch):
     with pytest.raises(SystemExit) as exc_info:
         main()
 
-    # argparse обычно возвращает код 2 для ошибок аргументов
     assert exc_info.value.code == 2
     
     error_output = captured_error.getvalue()
