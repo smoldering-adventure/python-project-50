@@ -53,3 +53,22 @@ def test_main_help(monkeypatch):
     assert "-h, --help" in actual_output
     assert "--format FORMAT" in actual_output or "-f FORMAT" in actual_output
 
+
+def test_main_missing_arguments(monkeypatch):
+    """Тестирует обработку отсутствия обязательных аргументов."""
+    captured_output = io.StringIO()
+    captured_error = io.StringIO()
+    
+    monkeypatch.setattr(sys, 'stdout', captured_output)
+    monkeypatch.setattr(sys, 'stderr', captured_error)
+    monkeypatch.setattr(sys, 'argv', ['gendiff'])  # Нет аргументов
+
+    with pytest.raises(SystemExit) as exc_info:
+        main()
+
+    # argparse обычно возвращает код 2 для ошибок аргументов
+    assert exc_info.value.code == 2
+    
+    error_output = captured_error.getvalue()
+    assert "error" in error_output.lower()
+
