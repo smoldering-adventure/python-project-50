@@ -71,7 +71,7 @@ def test_plain_format_flat_files():
         json.dump({
             "follow": False,
             "host": "hexlet.io",
-            "proxy": "123.234.53.22",
+            "proxy": "192.168.1.1",
             "timeout": 50
         }, f1)
         file1 = f1.name
