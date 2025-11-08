@@ -23,7 +23,7 @@ def format_dict(data: Dict, depth: int) -> str:
     
     for key, value in sorted(data.items()):
         formatted_value = format_value(value, depth)
-        lines.append(f"{indent}{key}: {formatted_value}")
+        lines.append(f"{indent}    {key}: {formatted_value}")
     
     result = '\n'.join(lines)
     return f"{{\n{result}\n{indent[:-4]}}}"
