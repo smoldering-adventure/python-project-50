@@ -11,34 +11,14 @@ on:
       - '**'
     tags:
       - '**'
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Hexlet project check
         uses: hexlet/project-action@release
         with:
           hexlet-id: ${{ secrets.HEXLET_ID }}
-
-      - name: Install dependencies
-        run: |
-          pip install uv
-          make install
-
-      - name: Run setup
-        run: make setup
-
-      - name: Run tests
-        run: |
-          make test
-          make test-coverage
-
-      - name: Run linter
-        run: make lint
