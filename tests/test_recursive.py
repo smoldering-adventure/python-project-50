@@ -42,7 +42,8 @@ def test_recursive_yaml_diff():
 
 
 def test_json_and_yaml_recursive_comparison():
-    """Тестирует что YAML и JSON с одинаковыми данными дают одинаковый результат."""
+    """Тестирует что YAML и JSON 
+    с одинаковыми данными дают одинаковый результат."""
     json_file1 = os.path.join(test_dir, "test_data", "file1_recursive.json")
     json_file2 = os.path.join(test_dir, "test_data", "file2_recursive.json")
     yaml_file1 = os.path.join(test_dir, "test_data", "file1_recursive.yaml")
@@ -67,7 +68,9 @@ def test_default_format_is_stylish():
 
 def test_plain_format_flat_files():
     """Тестирует plain формат для плоских файлов."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f1:
         json.dump({
             "follow": False,
             "host": "hexlet.io",
@@ -76,7 +79,9 @@ def test_plain_format_flat_files():
         }, f1)
         file1 = f1.name
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f2:
         json.dump({
             "host": "hexlet.io",
             "timeout": 20,
@@ -129,13 +134,17 @@ def test_plain_format_recursive():
 
 def test_plain_format_complex_values():
     """Тестирует отображение сложных значений как [complex value]."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f1:
         json.dump({
             "nested": {"key": "value"}
         }, f1)
         file1 = f1.name
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f2:
         json.dump({
             "nested": {"key": "new_value", "new_key": "value"}
         }, f2)
@@ -144,8 +153,14 @@ def test_plain_format_complex_values():
     try:
         result = generate_diff(file1, file2, 'plain')
         
-        assert "Property 'nested.key' was updated. From 'value' to 'new_value'" in result
-        assert "Property 'nested.new_key' was added with value: 'value'" in result
+        assert (
+            "Property 'nested.key' was updated. From 'value' to 'new_value'" 
+            in result
+        )
+        assert (
+            "Property 'nested.new_key' was added with value: 'value'" 
+            in result
+        )
     finally:
         import os
         os.unlink(file1)
@@ -154,11 +169,15 @@ def test_plain_format_complex_values():
 
 def test_plain_format_empty_files():
     """Тестирует plain формат для пустых файлов."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f1:
         json.dump({}, f1)
         file1 = f1.name
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f2:
         json.dump({}, f2)
         file2 = f2.name
     

@@ -23,7 +23,8 @@ def test_flat_yaml_diff():
 
 
 def test_yaml_and_json_comparison():
-    """Тестирует что YAML и JSON с одинаковыми данными дают одинаковый результат."""
+    """Тестирует что YAML и JSON 
+    с одинаковыми данными дают одинаковый результат."""
     json_file1 = os.path.join(test_dir, "test_data", "file1.json")
     json_file2 = os.path.join(test_dir, "test_data", "file2.json")
     yaml_file1 = os.path.join(test_dir, "test_data", "file1.yaml")
@@ -43,7 +44,9 @@ def test_yaml_file_not_found():
 
 def test_invalid_yaml_file():
     """Тестирует обработку некорректного YAML файла."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.yaml', delete=False
+    ) as f:
         f.write("invalid: yaml: content: [")
         invalid_yaml = f.name
     

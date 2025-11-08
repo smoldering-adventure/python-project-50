@@ -41,7 +41,9 @@ def format_plain(diff: list, path: str = '') -> str:
                 lines.append(nested_lines)
         elif node_type == 'added':
             value = format_value(node['value'])
-            lines.append(f"Property '{current_path}' was added with value: {value}")
+            lines.append(
+                f"Property '{current_path}' was added with value: {value}"
+            )
         elif node_type == 'removed':
             lines.append(f"Property '{current_path}' was removed")
         elif node_type == 'changed':

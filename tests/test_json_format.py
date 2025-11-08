@@ -9,7 +9,9 @@ test_dir = os.path.dirname(os.path.abspath(__file__))
 
 def test_json_format_flat_files():
     """Тестирует JSON формат для плоских файлов."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f1:
         json.dump({
             "follow": False,
             "host": "hexlet.io",
@@ -17,7 +19,9 @@ def test_json_format_flat_files():
         }, f1)
         file1 = f1.name
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f2:
         json.dump({
             "host": "hexlet.io",
             "timeout": 20,
@@ -36,7 +40,9 @@ def test_json_format_flat_files():
         for item in parsed_result:
             assert 'key' in item
             assert 'type' in item
-            assert item['type'] in ['added', 'removed', 'unchanged', 'changed', 'nested']
+            assert item['type'] in [
+                'added', 'removed', 'unchanged', 'changed', 'nested'
+            ]
     finally:
         import os
         os.unlink(file1)
@@ -62,11 +68,15 @@ def test_json_format_recursive():
 
 def test_json_format_contains_correct_structure():
     """Тестирует что JSON формат содержит правильную структуру данных."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f1:
         json.dump({"key": "value1"}, f1)
         file1 = f1.name
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f2:
         json.dump({"key": "value2"}, f2)
         file2 = f2.name
     
@@ -89,18 +99,22 @@ def test_json_format_contains_correct_structure():
 
 def test_json_format_empty_files():
     """Тестирует JSON формат для пустых файлов."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f1:
         json.dump({}, f1)
         file1 = f1.name
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.json', delete=False
+    ) as f2:
         json.dump({}, f2)
         file2 = f2.name
     
     try:
         result = generate_diff(file1, file2, 'json')
         parsed_result = json.loads(result)
-        assert parsed_result == []  # Для одинаковых пустых файлов - пустой список
+        assert parsed_result == []
     finally:
         import os
         os.unlink(file1)

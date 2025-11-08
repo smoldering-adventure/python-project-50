@@ -21,7 +21,9 @@ def format_json(diff: list) -> str:
         node_type = node['type']
         
         if node_type == 'nested':
-            result['children'] = [process_node(child) for child in node['children']]
+            result['children'] = [
+                process_node(child) for child in node['children']
+            ]
         elif node_type == 'added':
             result['value'] = node['value']
         elif node_type == 'removed':

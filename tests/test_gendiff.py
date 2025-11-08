@@ -7,7 +7,8 @@ from gendiff.scripts.gendiff import main
 
 
 def test_main_output(monkeypatch):
-    """Тестирует успешное выполнение main() с двумя файлами в stylish формате."""
+    """Тестирует успешное выполнение main() 
+    с двумя файлами в stylish формате."""
     captured_output = io.StringIO()
     monkeypatch.setattr(sys, 'stdout', captured_output)
 
