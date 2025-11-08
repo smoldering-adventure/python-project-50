@@ -25,3 +25,27 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@40f5b61913e891f9d316696628698051136015be
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+  tests:
+    name: Run Tests and Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          make install
+
+      - name: Run setup
+        run: make setup
+
+      - name: Run tests
+        run: |
+          make test
+          make test-coverage
+
+      - name: Run linter
+        run: make lint
