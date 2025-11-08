@@ -26,7 +26,7 @@ def format_dict(data: Dict, depth: int) -> str:
         lines.append(f"{indent}    {key}: {formatted_value}")
     
     result = '\n'.join(lines)
-    return f"{{\n{result}\n{indent[:-4]}}}"
+    return f"{{\n{result}\n{indent}}}"
 
 
 def format_stylish(diff: list, depth: int = 0) -> str:
