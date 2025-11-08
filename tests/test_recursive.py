@@ -65,42 +65,106 @@ def test_default_format_is_stylish():
     assert result_default == result_stylish
 
 
-def test_plain_format_still_works():
-    """Тестирует что plain формат все еще работает для плоских структур."""
+def test_plain_format_flat_files():
+    """Тестирует plain формат для плоских файлов."""
     with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
-        json.dump({"key": "value1"}, f1)
+        json.dump({
+            "follow": False,
+            "host": "hexlet.io",
+            "proxy": "123.234.53.22",
+            "timeout": 50
+        }, f1)
         file1 = f1.name
     
     with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
-        json.dump({"key": "value2"}, f2)
+        json.dump({
+            "host": "hexlet.io",
+            "timeout": 20,
+            "verbose": True
+        }, f2)
         file2 = f2.name
     
     try:
         result = generate_diff(file1, file2, 'plain')
-        assert "- key: value1" in result
-        assert "+ key: value2" in result
+        
+        expected_lines = [
+            "Property 'follow' was removed",
+            "Property 'proxy' was removed", 
+            "Property 'timeout' was updated. From 50 to 20",
+            "Property 'verbose' was added with value: true"
+        ]
+        
+        for line in expected_lines:
+            assert line in result
     finally:
         import os
         os.unlink(file1)
         os.unlink(file2)
 
 
-def test_plain_format_with_nested():
-    """Тестирует plain формат с вложенными структурами."""
+def test_plain_format_recursive():
+    """Тестирует plain формат для рекурсивных структур."""
+    file1 = os.path.join(test_dir, "test_data", "file1_recursive.json")
+    file2 = os.path.join(test_dir, "test_data", "file2_recursive.json")
+    
+    result = generate_diff(file1, file2, 'plain')
+    
+    expected_lines = [
+        "Property 'common.follow' was added with value: false",
+        "Property 'common.setting2' was removed",
+        "Property 'common.setting3' was updated. From true to null",
+        "Property 'common.setting4' was added with value: 'blah blah'",
+        "Property 'common.setting5' was added with value: [complex value]",
+        "Property 'common.setting6.doge.wow' was updated. From '' to 'so much'",
+        "Property 'common.setting6.ops' was added with value: 'vops'",
+        "Property 'group1.baz' was updated. From 'bas' to 'bars'",
+        "Property 'group1.nest' was updated. From [complex value] to 'str'",
+        "Property 'group2' was removed",
+        "Property 'group3' was added with value: [complex value]"
+    ]
+    
+    for line in expected_lines:
+        assert line in result
+
+
+def test_plain_format_complex_values():
+    """Тестирует отображение сложных значений как [complex value]."""
     with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
-        json.dump({"parent": {"child": "value1"}}, f1)
+        json.dump({
+            "nested": {"key": "value"}
+        }, f1)
         file1 = f1.name
     
     with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
-        json.dump({"parent": {"child": "value2"}}, f2)
+        json.dump({
+            "nested": {"key": "new_value", "new_key": "value"}
+        }, f2)
         file2 = f2.name
     
     try:
         result = generate_diff(file1, file2, 'plain')
-        # Проверяем plain формат с вложенными структурами
-        assert "parent: {" in result
-        assert "- child: value1" in result
-        assert "+ child: value2" in result
+        
+        assert "Property 'nested.key' was updated. From 'value' to 'new_value'" in result
+        assert "Property 'nested.new_key' was added with value: 'value'" in result
+    finally:
+        import os
+        os.unlink(file1)
+        os.unlink(file2)
+
+
+def test_plain_format_empty_files():
+    """Тестирует plain формат для пустых файлов."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f1:
+        json.dump({}, f1)
+        file1 = f1.name
+    
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f2:
+        json.dump({}, f2)
+        file2 = f2.name
+    
+    try:
+        result = generate_diff(file1, file2, 'plain')
+        assert result == ""  # Для одинаковых пустых файлов - пустой вывод
     finally:
         import os
         os.unlink(file1)

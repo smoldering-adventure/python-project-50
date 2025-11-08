@@ -92,7 +92,13 @@ def test_generate_diff_type_error():
 
 def test_format(expected_output):
     """Тестирует переданный формат"""
-    assert generate_diff(file1, file2, format_name='plain') == expected_output
+
+    assert generate_diff(file1, file2, format_name='plain') == (
+"""Property 'follow' was removed
+Property 'proxy' was removed
+Property 'timeout' was updated. From 50 to 20
+Property 'verbose' was added with value: true"""
+    )
     assert generate_diff(file1, file2, format_name='stylish') == expected_output
     assert generate_diff(file1, file2, format_name='not_format') == (
         "Ошибка: Не поддерживаемый формат not_format"

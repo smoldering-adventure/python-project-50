@@ -12,29 +12,7 @@ def test_main_output(monkeypatch):
     monkeypatch.setattr(sys, 'stdout', captured_output)
 
     original_argv = sys.argv
-    sys.argv = ['gendiff', 'file1.json', 'file2.json']
-
-    main()
-
-    sys.argv = original_argv
-
-    assert captured_output.getvalue().strip() == """{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}"""
-
-
-def test_main_plain_format(monkeypatch):
-    """Тестирует успешное выполнение main() с двумя файлами в plain формате."""
-    captured_output = io.StringIO()
-    monkeypatch.setattr(sys, 'stdout', captured_output)
-
-    original_argv = sys.argv
-    sys.argv = ['gendiff', 'file1.json', 'file2.json', '-f', 'plain']
+    sys.argv = ['gendiff', 'file1.json', 'file2.json', '-f', 'stylish']
 
     main()
 
